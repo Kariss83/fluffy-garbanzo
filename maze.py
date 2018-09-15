@@ -29,6 +29,13 @@ class Maze:
                 lvl_structure.append(line_structure)
             self.stucture = lvl_structure
 
+    def lvl_display(self):
+        """This method will allow to load graphical representation of the maze
+        structure that we generated with the lvl_creation method in a window"""
+        #associer à chaque lettre une image
+        #parcourir self.structure pour associer à chaque sprite une immage
+
+
 
 def main():
     maze = Maze('data/maze_structure.csv')
