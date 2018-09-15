@@ -46,4 +46,9 @@ class Player:
                     self.case_y += 1
         
 
+def main():
+    #chuck = Player(sprite_doc, maze)
+    pass
 
+if __name__ = "__main__":
+    main()

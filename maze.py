@@ -14,6 +14,7 @@ class Maze:
         in a csv file with ';' as delimiter"""
         self.file = data_file
         self.structure = []
+        self.empty = []
 
     def lvl_creation(self):
         """This method will allow the reading and and use of the csv file
@@ -21,12 +22,18 @@ class Maze:
         as a set of values (the one for each sprite)"""
         with open(self.file, "r") as mazestructure:
             lvl_structure = []
+            line_number = 0
             reader = csv.reader(mazestructure, delimiter=';')
             for lines in reader:
                 line_structure = []
+                sprite_number = 0
                 for sprite in lines:
                     line_structure.append(sprite)
+                    if sprite == 'o':
+                        self.empty.append((line_number,sprite_number))
+                    sprite_number += 1
                 lvl_structure.append(line_structure)
+                line_number += 1
             self.stucture = lvl_structure
 
     def lvl_display(self):
@@ -40,6 +47,7 @@ class Maze:
 def main():
     maze = Maze('data/maze_structure.csv')
     maze.lvl_creation()
+    print(maze.empty)
 
         
 if __name__ == "__main__":
