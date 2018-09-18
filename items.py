@@ -1,5 +1,5 @@
 #! usr/bin/env python3
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 import random
 
@@ -14,13 +14,23 @@ class Item:
         self.sprite = sprite
         self.level = lvl
 
-    def placing_items(self):
-        x = 0
-        y = 0
-        while self.level.structure[y][x] != 'o':
-            x = random.randint(14)
-            y = random.randint(14)
-        self.case_x = x
-        self.case_y = y
+    def placing_items(self, lvl):
+
+        random.seed()
+        k = random.randint(0, len(lvl.empty) -1)
+        self.case_x = lvl.empty[k][0]
+        self.case_y = lvl.empty[k][1]
+        del(lvl.empty[k])
+
+
+def main() :
+    pass
+	
+	
+if __name__ == "__main__":
+    main()
+
+
+
 
 
