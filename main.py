@@ -1,7 +1,8 @@
 #! usr/bin/env/python3
 # coding: utf-8
 
-from maze import *
+# -tc- Eviter d'importer tous les symboles d'un module
+from maze import * 
 from items import *
 
 		
