@@ -16,6 +16,7 @@ class Maze:
         self.structure = []
         self.empty = []
 
+    # -tc- pourquoi pas simplement creation (on est déjà dans une classe représentant le labyrinthe?
     def lvl_creation(self):
         """This method will allow the reading and and use of the csv file
         in order to build and store in the attribute 'structure' the maze 
@@ -24,6 +25,8 @@ class Maze:
             lvl_structure = []
             line_number = 0
             reader = csv.reader(mazestructure, delimiter=';')
+            # -tc- plutôt que de maintenir les variables line_number et sprite_number
+            # -tc- à la main, la aolution pythonique est plutôt d'utiliser enumerate()
             for lines in reader:
                 line_structure = []
                 sprite_number = 0
@@ -31,11 +34,16 @@ class Maze:
                     line_structure.append(sprite)
                     if sprite == 'o':
                         self.empty.append((line_number,sprite_number))
+                        # -tc- Il peut être avantageux d'utiliser un ensemble plutot qu'une liste
                     sprite_number += 1
                 lvl_structure.append(line_structure)
                 line_number += 1
             self.stucture = lvl_structure
+            
 
+    # -tc- Pourquoi pas simplement display ?
+    # -tc- Dans un soucis de représentation des couches, la représentation graphique
+    # -tc- du labyrinthe ne devrait pas être la préoccupation de Maze
     def lvl_display(self):
         """This method will allow to load graphical representation of the maze
         structure that we generated with the lvl_creation method in a window"""
