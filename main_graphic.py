@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import os
+import time
 
 from pygame.locals import *
 
@@ -24,6 +25,15 @@ HERO_IMAGE = "data/ressource/MacGyver.png"
 ETHER_SPRITE = "data/ressource/ether.png"
 NEEDLE_SPRITE = "data/ressource/aiguille.png"
 PLASTIC_TUBE_SPRITE = "data/ressource/tube_plastique.png"
+INVENTORY_LIST = ["data/ressource/inv0.png",
+                  "data/ressource/inv1.png",
+                  "data/ressource/inv2.png",
+                  "data/ressource/inv3.png"]
+WIN = "data/ressource/win.png"
+LOSS = "data/ressource/loss.png"
+
+
+
 
 """And now the program itself"""
 # pygame start
@@ -31,7 +41,7 @@ pygame.init()
 os.environ["SDL_VIDEODRIVER"] = "dummy"
 
 # initiating pygame window at the size of our total sprites
-window = pygame.display.set_mode((WINDOW_SIZE, WINDOW_SIZE), RESIZABLE)
+window = pygame.display.set_mode((WINDOW_SIZE, WINDOW_SIZE + PIXELS_PER_SPRITE), RESIZABLE)
 # game icon
 icon = pygame.image.load(ICON_IMAGE)
 pygame.display.set_icon(icon)
@@ -92,6 +102,10 @@ while control_loop:
     needle.display_item(window)
     plastic_tube.display_item(window)
 
+    # Display the inventory counter
+    inventory = pygame.image.load(INVENTORY_LIST[0])
+    window.blit(inventory, (0, 900))
+
     # on rentre dans le jeu en lui même
     while remain_in_game:
 
@@ -135,12 +149,25 @@ while control_loop:
         needle.display_item(window)
         plastic_tube.display_item(window)
         window.blit(macgyver.sprite, (macgyver.x, macgyver.y))
+
+        # Display the inventory counter
+        inventory = pygame.image.load(INVENTORY_LIST[macgyver.inventory])
+        window.blit(inventory, (0, 900))
+
         pygame.display.flip()
 
         # Victoire -> Retour à l'accueil
-        if maze.structure[macgyver.case_y][macgyver.case_x] in maze.exit:
-            if macgyver.inventory != 3:
+        if maze.structure[macgyver.case_x][macgyver.case_y] == 'e':
+            if macgyver.inventory == 3:
+                win = pygame.image.load(WIN).convert()
+                window.blit(win, (0, 0))
+                pygame.display.flip()
+                time.sleep(5.5)
                 remain_in_game = 0
-                print('you loose')
+
             else:
+                loss = pygame.image.load(LOSS).convert()
+                window.blit(loss, (0, 0))
+                pygame.display.flip()
+                time.sleep(5.5)
                 remain_in_game = 0

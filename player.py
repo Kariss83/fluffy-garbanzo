@@ -62,6 +62,7 @@ class Player:
             lvl.items.remove((self.case_x, self.case_y))
 
 
+
 def main():
     maze = Maze('data/maze_structure.csv')
     maze.lvl_creation()
