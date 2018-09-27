@@ -42,7 +42,7 @@ class Maze:
                         self.entry.append((x, y))
                     elif sprite == 'e':
                         self.exit.append((x, y))
-                        self.empty.append((x, y))git
+                        self.empty.append((x, y))
                 lvl_structure.append(line_structure)
             self.structure = lvl_structure
 
