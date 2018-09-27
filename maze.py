@@ -29,24 +29,20 @@ class Maze:
         as a set of values (the one for each sprite)"""
         with open(self.file, "r") as mazestructure:
             lvl_structure = []
-            line_number = 0
             reader = csv.reader(mazestructure, delimiter=';')
 
-            for lines in reader:
+            for x, lines in enumerate(reader):
                 line_structure = []
-                sprite_number = 0
-                for sprite in lines:
+                for y, sprite in enumerate(lines):
                     line_structure.append(sprite)
                     if sprite == 'o':
-                        self.empty.append((line_number, sprite_number))
-                        self.empty_for_obj.append((line_number, sprite_number))
+                        self.empty.append((x, y))
+                        self.empty_for_obj.append((x, y))
                     elif sprite == 'entry':
-                        self.entry.append((line_number, sprite_number))
+                        self.entry.append((x, y))
                     elif sprite == 'e':
-                        self.exit.append((line_number, sprite_number))
-                        self.empty.append((line_number, sprite_number))
-                    sprite_number += 1
-                line_number += 1
+                        self.exit.append((x, y))
+                        self.empty.append((x, y))git
                 lvl_structure.append(line_structure)
             self.structure = lvl_structure
 
