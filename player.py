@@ -1,54 +1,72 @@
 #! usr/bin/env python3
-# coding: utf-8
+# -*- coding: utf-8 -*-
+
+
+from maze import *
+from items import *
+
+PIXELS_PER_SPRITE = 60
+
 
 class Player:
     """This class will allow the creation of the playable character
     (aka. Chuck) and allow him to move through the maze"""
 
     def __init__(self, sprite, lvl):
-        #we load the sprite of the playale character with pygame
-        self.sprite = 0
-        #we need to indicate the lvl in order to get the initial position
+        # we load the sprite of the playable character with pygame
+        # self.sprite = pygame.image.load(sprite).convert()
+        # we need to indicate the lvl in order to get the initial position
         self.level = lvl
-        #in a particular lvl we have to look for the coordinates of the entrance
-        #should be able to get a tuple with its position in the maze structure
-        self.case_x = 0
-        self.case_y = 0
-        #inventory is empty at creation
-        self.inventory = []
+        self.sprite = pygame.image.load(sprite).convert_alpha()
+        # in a particular lvl we have to look for the coordinates of the entrance
+        # should be able to get a tuple with its position in the maze structure
+        self.case_x = lvl.entry[0][0]
+        self.case_y = lvl.entry[0][1]
+        self.x = self.case_x * PIXELS_PER_SPRITE
+        self.y = self.case_y * PIXELS_PER_SPRITE
+        # inventory is empty at creation
+        self.inventory = 0
 
-    def move_to(self, direction)
+    def move_to(self, direction, lvl):
         """Method that allow to move the player in any direction"""
 
-        #to the right
+        # to the right
         if direction == "right":
-            #we must not go over the lvl structure
-            if self.case_x < 14:
-                #we must not go through a wall
-                if self.level.structure[self.case_y][self.case_x + 1] =! "x":
-                    self.case_x += 1
+            if (self.case_y, self.case_x + 1) in lvl.empty:
+                lvl.structure[self.case_y][self.case_x] = '0'
+                self.case_x += 1
+                self.x = self.x = self.case_x * PIXELS_PER_SPRITE
 
-        #to the left
         if direction == "left":
-            if self.case_x > 0:
-                if self.level.structure[self.case_y][self.case_x - 1] =! "x":
-                    self.case_x -= 1
+            if (self.case_y, self.case_x - 1) in lvl.empty:
+                lvl.structure[self.case_y][self.case_x] = '0'
+                self.case_x -= 1
+                self.x = self.case_x * PIXELS_PER_SPRITE
 
-        #going up
         if direction == "up":
-            if self.case_y > 0:
-                if self.level.structure[self.case_y -1][self.case_x] =! "x":
-                    self.case_y -= 1
-        #going down
+            if (self.case_y - 1, self.case_x) in lvl.empty:
+                lvl.structure[self.case_y][self.case_x] = '0'
+                self.case_y -= 1
+                self.y = self.case_y * PIXELS_PER_SPRITE
+
         if direction == "down":
-            if self.case_y > 0:
-                if self.level.structure[self.case_y +1][self.case_x] =! "x":
-                    self.case_y += 1
-        
+            if (self.case_y + 1, self.case_x) in lvl.empty:
+                lvl.structure[self.case_y][self.case_x] = '0'
+                self.case_y += 1
+                self.y = self.case_y * PIXELS_PER_SPRITE
+
+    def Pickup(self, lvl):
+        if (self.case_x, self.case_y) in lvl.items:
+            print("vous etes sur un item, vous le ramassez ! ")
+            self.inventory += 1
+            lvl.items.remove((self.case_x, self.case_y))
+
 
 def main():
-    #chuck = Player(sprite_doc, maze)
-    pass
+    maze = Maze('data/maze_structure.csv')
+    maze.lvl_creation()
+    chuck = Player(0, maze)
 
-if __name__ = "__main__":
+
+if __name__ == "__main__":
     main()
