@@ -68,9 +68,11 @@ class Maze:
                 # we compute the position in pixel
                 x = case_number * PIXELS_PER_SPRITE
                 y = line_number * PIXELS_PER_SPRITE
+                # We display wall everywhere there is a free space represented by a o in the csv file
                 if sprite == 'x':  # x = wall
                     window.blit(wall, (x, y))
-                elif sprite == 'e':
+                # And the guardian sprite at the position that contains an e for exit
+                elif sprite == 'e': # e = exit
                     window.blit(guardian, (x, y))
                 case_number += 1
             line_number += 1

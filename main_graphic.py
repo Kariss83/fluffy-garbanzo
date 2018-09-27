@@ -33,14 +33,15 @@ WIN = "data/ressource/win.png"
 LOSS = "data/ressource/loss.png"
 
 
-
-
 """And now the program itself"""
 # pygame start
 pygame.init()
 os.environ["SDL_VIDEODRIVER"] = "dummy"
 
-# initiating pygame window at the size of our total sprites
+# random initalization
+random.seed()
+
+# initiating pygame window at the size of our total sprites + inventory display
 window = pygame.display.set_mode((WINDOW_SIZE, WINDOW_SIZE + PIXELS_PER_SPRITE), RESIZABLE)
 # game icon
 icon = pygame.image.load(ICON_IMAGE)
@@ -51,7 +52,7 @@ pygame.display.set_caption(WINDOW_TITLE)
 # main loop
 control_loop = 1
 while control_loop:
-    # boucles de contrôle pour savoir où le joueur en est
+    # control loops to navigate between the lobby and the game
     remain_in_lobby = 1
     remain_in_game = 1
 
@@ -59,7 +60,7 @@ while control_loop:
     lobby = pygame.image.load(LOBBY_IMAGE).convert()
     window.blit(lobby, (0, 0))
 
-    # Refresh
+    # Refresh the display
     pygame.display.flip()
 
     while remain_in_lobby:
@@ -92,9 +93,9 @@ while control_loop:
     needle = Item(maze, NEEDLE_SPRITE)
     plastic_tube = Item(maze, PLASTIC_TUBE_SPRITE)
     ether = Item(maze, ETHER_SPRITE)
-    ether.placing(maze)
-    needle.placing(maze)
-    plastic_tube.placing(maze)
+    ether.placing()
+    needle.placing()
+    plastic_tube.placing()
 
     # display of the created world
     maze.display(window, WALL_IMAGE, GARDIAN_IMAGE)
@@ -106,26 +107,24 @@ while control_loop:
     inventory = pygame.image.load(INVENTORY_LIST[0])
     window.blit(inventory, (0, 900))
 
-    # on rentre dans le jeu en lui même
+    # now entering the game loop itself
     while remain_in_game:
 
-        # moving the hero
-        # Limitation de vitesse de la boucle
+        # Loop speed limitation
         pygame.time.Clock().tick(30)
 
         for event in pygame.event.get():
-            # Si l'utilisateur quitte, on met la variable qui continue le jeu
-            # ET la variable générale à 0 pour fermer la fenêtre
+            # If the user wants to quit we set control loops to 0
             if event.type == QUIT:
                 remain_in_game = 0
-                control = 0
+                control_loop = 0
 
             elif event.type == KEYDOWN:
-                # Si l'utilisateur presse Echap ici, on revient seulement au menu
+                # If the user only press escape he comes back to the lobby
                 if event.key == K_ESCAPE:
                     remain_in_game = 0
 
-                # Touches de déplacement de Donkey Kong
+                # Moving MacGyver using the arrow keys
                 elif event.key == K_RIGHT:
                     macgyver.move_to('right', maze)
                 elif event.key == K_LEFT:
@@ -135,14 +134,14 @@ while control_loop:
                 elif event.key == K_DOWN:
                     macgyver.move_to('down', maze)
 
-            # On ramasse si besoin
+            # We try to pick up the item on the position we are after every movement
             macgyver.Pickup(maze)
-            print('vous avez : ', macgyver.inventory, 'item in your bag /n')
+            # If an object is picked up, he should not be displayed anymore
             ether.stop_display(macgyver)
             needle.stop_display(macgyver)
             plastic_tube.stop_display(macgyver)
 
-        # Affichages aux nouvelles positions
+        # Display of the new situation after every movements
         window.blit(background, (0, 0))
         maze.display(window, WALL_IMAGE, GARDIAN_IMAGE)
         ether.display_item(window)
@@ -154,20 +153,25 @@ while control_loop:
         inventory = pygame.image.load(INVENTORY_LIST[macgyver.inventory])
         window.blit(inventory, (0, 900))
 
+        # Refresh display
         pygame.display.flip()
 
-        # Victoire -> Retour à l'accueil
+        # We check for victory (at the exit with all items in inventory)
         if maze.structure[macgyver.case_x][macgyver.case_y] == 'e':
             if macgyver.inventory == 3:
+                # We display the win page
                 win = pygame.image.load(WIN).convert()
                 window.blit(win, (0, 0))
                 pygame.display.flip()
                 time.sleep(5.5)
+                # And we restart the game
                 remain_in_game = 0
-
+            # If we goes the guardian without all the items, we loose :
             else:
+                # we display the loose page
                 loss = pygame.image.load(LOSS).convert()
                 window.blit(loss, (0, 0))
                 pygame.display.flip()
                 time.sleep(5.5)
+                # And restart the game
                 remain_in_game = 0
