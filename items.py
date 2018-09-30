@@ -22,22 +22,27 @@ class Item:
 
     @property
     def x(self):
-        return self.case_x * PIXELS_PER_SPRITE
+        return self.case_y * PIXELS_PER_SPRITE
 
     @property
     def y(self):
-        return self.case_y * PIXELS_PER_SPRITE
+        return self.case_x * PIXELS_PER_SPRITE
 
     def placing(self, lvl):
+        # -tc- on n'exécute seed() que une fois par programme
         random.seed()
-        k = random.randint(0, len(lvl.empty_for_obj) - 1)
-        self.case_x = lvl.empty_for_obj[k][1]
-        self.case_y = lvl.empty_for_obj[k][0]
-        lvl.items.append((self.case_x, self.case_y))
-        del (lvl.empty_for_obj[k])
+        # k = random.randint(0, len(lvl.empty_for_obj) - 1)
+        # self.case_x = lvl.empty_for_obj[k][1]
+        # self.case_y = lvl.empty_for_obj[k][0]
+        # lvl.items.append((self.case_x, self.case_y))
+        # del (lvl.empty_for_obj[k])
+        self.case_x,  self.case_y = random.choice(self.level.empty_for_obj)
+        self.level.items.append((self.case_x,  self.case_y))
+        self.level.empty_for_obj.remove((self.case_x,  self.case_y))
 
     def display_item(self, window):
         if self.state:
+            # -tc- Attention d'afficher les sprites dans le bon ordre
             window.blit(self.sprite, (self.x, self.y))
 
     def stop_display(self, player):
