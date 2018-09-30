@@ -6,8 +6,14 @@ import time
 
 from pygame.locals import *
 
+# -tc- Eviter les from module import *
 from player import *
 
+# -tc- Définir de préférences les constantes globales de l'application dans
+# -tc- un fichier séparé, constants.py par exemple
+
+# -tc- On utilise le dièse pour les commentaires. Les guillemets définissent ici une
+# -tc- docstring au niveau du module
 """Here are all the constants we need in the game"""
 # window parameter
 SPRITE_NUMBER = 15
@@ -15,6 +21,7 @@ PIXELS_PER_SPRITE = 60
 WINDOW_SIZE = SPRITE_NUMBER * PIXELS_PER_SPRITE
 # window tuning
 WINDOW_TITLE = "Escape game MacGyver"
+# -tc- resource ne prend qu'un seul s en anglais
 ICON_IMAGE = 'data/ressource/tile-crusader-logo.png'
 # game images
 LOBBY_IMAGE = "data/ressource/accueil.png"
@@ -32,7 +39,22 @@ INVENTORY_LIST = ["data/ressource/inv0.png",
 WIN = "data/ressource/win.png"
 LOSS = "data/ressource/loss.png"
 
+# -tc- mettre le code de lancement de l'application, de préférence dans
+# -tc- une classe Main/App/Application/Game ou au minimum dans un fonction
+# -tc- main(). Limiter la quantité de code dans le contexte global au minimum
 
+# -tc- Par exemple
+class Game:
+    """Main class of the application."""
+
+    def __init__(self):
+        """Application-level initialization code"""
+        pygame.init()
+        # -tc- etc.
+
+    def start(self):
+        """Main entry point of the application"""
+        pass
 
 
 """And now the program itself"""
@@ -49,9 +71,17 @@ pygame.display.set_icon(icon)
 pygame.display.set_caption(WINDOW_TITLE)
 
 # main loop
+# -tc- Afin de clarifier leur rôle, utiliser des boléens pour les sentinelles
+# -tc- de boucle. Des noms de variables plus descriptifs sont également une
+# -tc- aide, comme par exemple is_running = True
 control_loop = 1
+
+# -tc- L'utilisation des boucles imbriquées rent le code difficile à lire
+# -tc- L'usage de fonctions peut aider
 while control_loop:
     # boucles de contrôle pour savoir où le joueur en est
+    # -tc- Comme plus haut, utiliser de préférence des valeurs booléennes
+    # -tc- pour les sentinelles de boucle.
     remain_in_lobby = 1
     remain_in_game = 1
 
@@ -69,12 +99,17 @@ while control_loop:
         for event in pygame.event.get():
             # In case the user wants to qui we put all control variable
             # the value 0
+            # -tc- Utiliser des parenthèses pour clarifier
+            # -tc- if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE)
+            # -tc- beaucoup de gens ignorent que or a une précédence plus faible que and
             if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                # -tc- utiliser False plutôt que 0
                 control_loop = 0
                 remain_in_game = 0
                 remain_in_lobby = 0
 
             elif event.type == KEYDOWN:
+                # -tc- False
                 remain_in_lobby = 0  # leaving the lobby
 
     # now that we exit the lobby we have to create the game structure
@@ -82,10 +117,12 @@ while control_loop:
     background = pygame.image.load(BACKGROUND_IMAGE).convert()
 
     # lvl generation
+    # -tc- Maze n'est pas importé, mais présent grâce à from player import *
     maze = Maze('data/maze_structure.csv')
     maze.creation()
 
     # hero generation
+    # -tc- Pourquoi pas de constante pour PLAYER_SPRITE comme les autres ?
     macgyver = Player('data/ressource/MacGyver.png', maze)
 
     # items generation
@@ -103,6 +140,8 @@ while control_loop:
     plastic_tube.display_item(window)
 
     # Display the inventory counter
+    # -tc- Il est possible d'écrire avec Pygame: pygame.font.Font() our pygame.font.SysFont()
+    # -tc- pygame.font.Font() te permet d'utiliser un fichier .ttf pour fournir la police.
     inventory = pygame.image.load(INVENTORY_LIST[0])
     window.blit(inventory, (0, 900))
 
@@ -117,12 +156,14 @@ while control_loop:
             # Si l'utilisateur quitte, on met la variable qui continue le jeu
             # ET la variable générale à 0 pour fermer la fenêtre
             if event.type == QUIT:
+                # -tc- Utiliser FALSE
                 remain_in_game = 0
                 control = 0
 
             elif event.type == KEYDOWN:
                 # Si l'utilisateur presse Echap ici, on revient seulement au menu
                 if event.key == K_ESCAPE:
+                    # -tc- Utiliser FALSE
                     remain_in_game = 0
 
                 # Touches de déplacement de Donkey Kong
@@ -135,6 +176,7 @@ while control_loop:
                 elif event.key == K_DOWN:
                     macgyver.move_to('down', maze)
 
+            # -tc- Le bloc si dessous pourrait de s'exécuter que si il y a eu KEYDOWN + Mouvement
             # On ramasse si besoin
             macgyver.Pickup(maze)
             print('vous avez : ', macgyver.inventory, 'item in your bag /n')
@@ -156,7 +198,10 @@ while control_loop:
 
         pygame.display.flip()
 
+        # -tc- Chez moi, toute la logique de fin ne s'affiche pas
         # Victoire -> Retour à l'accueil
+        # -tc- Pluôt utiliser une méthode comme maze.is_end() que d'accéder directement à la structure
+        # -tc- interne de l'objet.
         if maze.structure[macgyver.case_x][macgyver.case_y] == 'e':
             if macgyver.inventory == 3:
                 win = pygame.image.load(WIN).convert()
