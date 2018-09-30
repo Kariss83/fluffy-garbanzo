@@ -196,7 +196,7 @@ while control_loop:
         inventory = pygame.image.load(INVENTORY_LIST[macgyver.inventory])
         window.blit(inventory, (0, 900))
 
-        pygame.display.flip()
+        pygame.display.update()
 
         # -tc- Chez moi, toute la logique de fin ne s'affiche pas
         # Victoire -> Retour à l'accueil

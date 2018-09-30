@@ -32,19 +32,27 @@ class Maze:
             line_number = 0
             reader = csv.reader(mazestructure, delimiter=';')
 
+            # -tc- for line_number, line in enumerate(reader) (pour lines au pluriel?)
             for lines in reader:
                 line_structure = []
                 sprite_number = 0
+                # -tc- for sprite_number, sprite in enumerate(line)
                 for sprite in lines:
                     line_structure.append(sprite)
                     if sprite == 'o':
                         self.empty.append((line_number, sprite_number))
                         self.empty_for_obj.append((line_number, sprite_number))
                     elif sprite == 'entry':
+                        # -tc- Pourquoi self.entry est une liste? Il n'y aura jamais plus de une position
                         self.entry.append((line_number, sprite_number))
+                        # -tc- Tu as oublié d'ajouter la position de entry à ta liste, ce qui introduit un bug
+                        # -tc- dans ton jeu
+                        self.empty.append((line_number, sprite_number))
                     elif sprite == 'e':
+                        # -tc- Pourquoi self.exit est une liste? Il n'y aura jamais plus de une position
                         self.exit.append((line_number, sprite_number))
                         self.empty.append((line_number, sprite_number))
+                    # -tc- Pas nécessaire avec enumerate qui est la manière idiomatique de faire
                     sprite_number += 1
                 line_number += 1
                 lvl_structure.append(line_structure)
@@ -61,9 +69,12 @@ class Maze:
 
         # we go through the level structure to give each position its sprite
         line_number = 0
+        # -tc- ou for line_number, line in enumerate(self.structure)
+        # -tc- Pourquoi ligne est en français?
         for ligne in self.structure:
             # On parcourt les listes de lignes
             case_number = 0
+            # -tc- for case_number, sprite in enumerate(line)
             for sprite in ligne:
                 # we compute the position in pixel
                 x = case_number * PIXELS_PER_SPRITE
