@@ -19,8 +19,8 @@ class Maze:
         self.structure = []
         self.empty = []
         self.empty_for_obj = []
-        self.entry = []
-        self.exit = []
+        self.entry = None
+        self.exit = None
         self.items = []
 
     def creation(self):
@@ -31,18 +31,19 @@ class Maze:
             lvl_structure = []
             reader = csv.reader(mazestructure, delimiter=';')
 
-            for x, lines in enumerate(reader):
+            for case_x, line in enumerate(reader):
                 line_structure = []
-                for y, sprite in enumerate(lines):
+                for case_y, sprite in enumerate(line):
                     line_structure.append(sprite)
                     if sprite == 'o':
-                        self.empty.append((x, y))
-                        self.empty_for_obj.append((x, y))
+                        self.empty.append((case_x, case_y))
+                        self.empty_for_obj.append((case_x, case_y))
                     elif sprite == 'entry':
-                        self.entry.append((x, y))
+                        self.entry = (case_x, case_y)
+                        self.empty.append((case_x, case_y))
                     elif sprite == 'e':
-                        self.exit.append((x, y))
-                        self.empty.append((x, y))
+                        self.exit = (case_x, case_y)
+                        self.empty.append((case_x, case_y))
                 lvl_structure.append(line_structure)
             self.structure = lvl_structure
 
