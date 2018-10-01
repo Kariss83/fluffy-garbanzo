@@ -3,10 +3,15 @@
 
 import os
 import time
+import random
+
+import pygame
 
 from pygame.locals import *
 
-from player import *
+from player import Player
+from maze import Maze
+from items import Item
 
 """Here are all the constants we need in the game"""
 # window parameter
@@ -50,11 +55,11 @@ pygame.display.set_icon(icon)
 pygame.display.set_caption(WINDOW_TITLE)
 
 # main loop
-control_loop = 1
-while control_loop:
+is_running = True
+while is_running:
     # control loops to navigate between the lobby and the game
-    remain_in_lobby = 1
-    remain_in_game = 1
+    remain_in_lobby = True
+    remain_in_game = True
 
     # Load and display of the game lobby
     lobby = pygame.image.load(LOBBY_IMAGE).convert()
@@ -71,12 +76,12 @@ while control_loop:
             # In case the user wants to qui we put all control variable
             # the value 0
             if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-                control_loop = 0
-                remain_in_game = 0
-                remain_in_lobby = 0
+                is_running = False
+                remain_in_game = False
+                remain_in_lobby = False
 
             elif event.type == KEYDOWN:
-                remain_in_lobby = 0  # leaving the lobby
+                remain_in_lobby = False  # leaving the lobby
 
     # now that we exit the lobby we have to create the game structure
     # background loading
@@ -116,26 +121,26 @@ while control_loop:
         for event in pygame.event.get():
             # If the user wants to quit we set control loops to 0
             if event.type == QUIT:
-                remain_in_game = 0
-                control_loop = 0
+                remain_in_game = False
+                control_loop = False
 
             elif event.type == KEYDOWN:
                 # If the user only press escape he comes back to the lobby
                 if event.key == K_ESCAPE:
-                    remain_in_game = 0
+                    remain_in_game = False
 
                 # Moving MacGyver using the arrow keys
                 elif event.key == K_RIGHT:
-                    macgyver.move_to('right', maze)
+                    macgyver.move_to('right')
                 elif event.key == K_LEFT:
-                    macgyver.move_to('left', maze)
+                    macgyver.move_to('left')
                 elif event.key == K_UP:
-                    macgyver.move_to('up', maze)
+                    macgyver.move_to('up')
                 elif event.key == K_DOWN:
-                    macgyver.move_to('down', maze)
+                    macgyver.move_to('down')
 
             # We try to pick up the item on the position we are after every movement
-            macgyver.Pickup(maze)
+            macgyver.Pickup()
             # If an object is picked up, he should not be displayed anymore
             ether.stop_display(macgyver)
             needle.stop_display(macgyver)
@@ -165,7 +170,7 @@ while control_loop:
                 pygame.display.flip()
                 time.sleep(5.5)
                 # And we restart the game
-                remain_in_game = 0
+                remain_in_game = False
             # If we goes the guardian without all the items, we loose :
             else:
                 # we display the loose page
@@ -174,4 +179,4 @@ while control_loop:
                 pygame.display.flip()
                 time.sleep(5.5)
                 # And restart the game
-                remain_in_game = 0
+                remain_in_game = False
