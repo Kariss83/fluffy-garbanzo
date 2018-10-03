@@ -74,6 +74,10 @@ class Maze:
                 case_number += 1
             line_number += 1
 
+    def is_victory(self, player):
+        if self.structure[player.case_x][player.case_y] == 'e':
+            return True
+
 
 def main():
     maze = Maze('data/maze_structure.csv')

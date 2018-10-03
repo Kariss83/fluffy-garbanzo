@@ -24,4 +24,5 @@ INVENTORY_LIST = ["data/ressource/inv0.png",
                   "data/ressource/inv3.png"]
 WIN = "data/ressource/win.png"
 LOSS = "data/ressource/loss.png"
-
+# Game constants :
+NUMBER_OF_ITEMS = 3
