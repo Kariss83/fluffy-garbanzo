@@ -156,6 +156,3 @@ while is_running:
                 time.sleep(5.5)
                 # And restart the game
                 remain_in_game = False
-
-if __name__ == "__main__":
-    main()

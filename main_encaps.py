@@ -56,7 +56,6 @@ class Game:
             elif event.type == KEYDOWN:
                 self.remain_in_lobby = False  # leaving the lobby
 
-
     def visual_rpr(self):
         # now that we exit the lobby we have to create the game structure
         # background loading
@@ -162,13 +161,13 @@ class Game:
     def run(self):
         self.is_running = True
         while self.is_running:
-            game.lobby()
-        game.visual_rpr()
+            self.lobby()
+        self.visual_rpr()
         # now entering the game loop itself
         while self.remain_in_game:
-            game.move()
-            game.reload_graphic()
-            game.check_endgame()
+            self.move()
+            self.reload_graphic()
+            self.check_endgame()
 
 
 if __name__ == "__main__":
