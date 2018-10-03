@@ -14,10 +14,14 @@ from maze import Maze
 from items import Item
 from constants import *
 
+# -tc- modifier le nom du module vers main.py
+
 
 class Game:
 
     def __init__(self):
+        # -tc- self.is_running est initialiser à False. Il ne prend la valeur True que lorsque
+        # -tc- la méthdode run a été exécutée.
         self.is_running = True
 
         # pygame start
@@ -36,8 +40,14 @@ class Game:
         pygame.display.set_caption(WINDOW_TITLE)
 
         # init of all other variables
+        # -tc- Ajouter maze,  needle, plastic_tube, ether
         self.background = None
+        self.maze = None
         self.macgyver = None
+        self.needle = None
+        self.plastic_tube = None
+        self.ether = None
+
         self.remain_in_game = True
         self.remain_in_lobby = True
 
@@ -48,6 +58,8 @@ class Game:
         for event in pygame.event.get():
             # In case the user wants to qui we put all control variable
             # the value 0
+            # -tc- Ajouter des parenthèses, car la précédence de and sur or n'est
+            # -tc pas claire pour tout le monde
             if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                 self.is_running = False
                 self.remain_in_game = False
@@ -56,12 +68,17 @@ class Game:
             elif event.type == KEYDOWN:
                 self.remain_in_lobby = False  # leaving the lobby
 
+    # -tc- Que signifie rpr? Une bonne pratique est de nommer les méthodes avec
+    # -tc- des noms compréhensibles
     def visual_rpr(self):
         # now that we exit the lobby we have to create the game structure
         # background loading
         self.background = pygame.image.load(BACKGROUND_IMAGE).convert()
 
         # lvl generation
+        # -tc- self.maze pour les éléments principaux du jeu, dont la durée
+        # -tc- de vie est plus étandue que cette méthode. Par exemple, maze
+        # -tc- est utilisé dans check_endgame.
         maze = Maze('data/maze_structure.csv')
         maze.creation()
 
@@ -69,6 +86,8 @@ class Game:
         self.macgyver = Player('data/resource/MacGyver.png', maze)
 
         # items generation
+        # -tc- Utilise également self pour needle,  plastic_tube, ether qui sont
+        # -tc- parmi les éléments importants du jeu
         needle = Item(maze, NEEDLE_SPRITE)
         plastic_tube = Item(maze, PLASTIC_TUBE_SPRITE)
         ether = Item(maze, ETHER_SPRITE)
@@ -77,6 +96,7 @@ class Game:
         plastic_tube.placing()
 
         # display of the created world
+        # -tc- self.maze,  self.ether,  self.needle,  self.plastic_tube
         maze.display(self.window, WALL_IMAGE, GARDIAN_IMAGE)
         ether.display_item(self.window)
         needle.display_item(self.window)
@@ -86,6 +106,8 @@ class Game:
         inventory = pygame.image.load(INVENTORY_LIST[0])
         self.window.blit(inventory, (0, 900))
 
+    # -tc- move ne peux être une méthode statique, car elle doit faire appel à
+    # -tc- self.macgyver, self.ether, self.needle, self.plastic_tube
     @staticmethod
     def move():
         # Loop speed limitation
@@ -123,13 +145,16 @@ class Game:
     def reload_graphic(self):
         # Display of the new situation after every movements
         self.window.blit(background, (0, 0))
+        # -tc- self.maze, self.ether, self.needle, self.plastic_tube
         maze.display(window, WALL_IMAGE, GARDIAN_IMAGE)
         ether.display_item(window)
         needle.display_item(window)
         plastic_tube.display_item(window)
+        # -tc- self.macgyver.x,  self.macgyver.y
         self.window.blit(macgyver.sprite, (macgyver.x, macgyver.y))
 
         # Display the inventory counter
+        # -tc- self.macgyver.inventory
         inventory = pygame.image.load(INVENTORY_LIST[macgyver.inventory])
         self.window.blit(inventory, (0, 900))
 
@@ -139,7 +164,11 @@ class Game:
 
     def check_endgame(self):
         # We check for victory (at the exit with all items in inventory)
+        # -tc- Il serait bien d'ajouter une méthode is_endgame() à maze pour tester la fin du jeu.
+        # -tc- Cela donnerait:
+        # -tc- if maze.is_endgame():
         if maze.structure[macgyver.case_x][macgyver.case_y] == 'e':
+            # -tc- Utiliser une constante comme NUMBER_OF_OBJECTS plutôt qu'un nombre magique comme 3
             if macgyver.inventory == 3:
                 # We display the win page
                 win = pygame.image.load(WIN).convert()
@@ -152,6 +181,7 @@ class Game:
             else:
                 # we display the loose page
                 loss = pygame.image.load(LOSS).convert()
+                # -tc- self.window.blit
                 window.blit(loss, (0, 0))
                 pygame.display.flip()
                 time.sleep(5.5)
