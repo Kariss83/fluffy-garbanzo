@@ -15,8 +15,6 @@ from items import Item
 from constants import *
 
 # -tc- modifier le nom du module vers main.py
-
-
 class Game:
 
     def __init__(self):
@@ -121,14 +119,16 @@ class Game:
             # We try to pick up the item on the position we are after every movement
             self.macgyver.Pickup()
             # If an object is picked up, he should not be displayed anymore
-            self.ether.stop_display(macgyver)
-            self.needle.stop_display(macgyver)
-            self.plastic_tube.stop_display(macgyver)
+            # -tc- self.macgyver
+            self.ether.stop_display(self.macgyver)
+            self.needle.stop_display(self.macgyver)
+            self.plastic_tube.stop_display(self.macgyver)
 
 
     def reload_graphic(self):
         # Display of the new situation after every movements
-        self.window.blit(background, (0, 0))
+        # -tc- self.background
+        self.window.blit(self.background, (0, 0))
         self.maze.display(self.window, WALL_IMAGE, GARDIAN_IMAGE)
         self.ether.display_item(self.window)
         self.needle.display_item(self.window)
@@ -166,15 +166,16 @@ class Game:
     def run(self):
         self.is_running = True
         while self.is_running:
-            self.lobby()
-        self.visual_representation()
-        # now entering the game loop itself
-        while self.remain_in_game:
-            self.move()
-            self.reload_graphic()
-            self.maze.is_victory(self.macgyver)
-            self.display_endgame()
-
+            # -tc- tant qu'on reste dans le lobby
+            while self.remain_in_lobby:
+                self.lobby()
+            self.visual_representation()
+            # now entering the game loop itself
+            while self.remain_in_game:
+                self.move()
+                self.reload_graphic()
+                if self.maze.is_endgame(self.macgyver):
+                    self.display_endgame()
 
 if __name__ == "__main__":
     game = Game()
