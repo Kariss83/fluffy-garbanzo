@@ -50,6 +50,11 @@ class Game:
         # Limitation of loop speed
         pygame.time.Clock().tick(30)
 
+        # display of the lobby
+        lobby = pygame.image.load(LOBBY_IMAGE).convert()
+        self.window.blit(lobby, (0, 0))
+        pygame.display.flip()
+
         for event in pygame.event.get():
             # In case the user wants to qui we put all control variable
             # the value 0
