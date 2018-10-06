@@ -25,10 +25,12 @@ class Player:
 
     @property
     def x(self):
+        """This property is useful for position in pixel in pygame"""
         return self.case_x * PIXELS_PER_SPRITE
 
     @property
     def y(self):
+        """This property is useful for position in pixel in pygame"""
         return self.case_y * PIXELS_PER_SPRITE
 
     def move_to(self, direction):

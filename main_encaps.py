@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import time
 import random
 
 import pygame
@@ -18,6 +17,8 @@ from constants import *
 class Game:
 
     def __init__(self):
+        """"We need to initialize here all that we need for the game to run : character, item, maze and
+        other display utilities"""
         self.is_running = False
 
         # pygame start
@@ -47,6 +48,8 @@ class Game:
         self.remain_in_lobby = True
 
     def lobby(self):
+        """" We start the lobby of a given game with a lobby screen that will vanish to let the player
+        start the actual game once he has pressed any key or let him leave if he press exit twice """
         # Limitation of loop speed
         pygame.time.Clock().tick(30)
 
@@ -67,6 +70,8 @@ class Game:
                 self.remain_in_lobby = False  # leaving the lobby
 
     def visual_representation(self):
+        """" This method allow us to display the main screen of the game at the beginning
+        with the maze, its structure,the items at their original position, the guardian and the player """
         # now that we exit the lobby we have to create the game structure
         # background loading
         self.background = pygame.image.load(BACKGROUND_IMAGE).convert()
@@ -97,6 +102,8 @@ class Game:
         self.window.blit(inventory, (0, 900))
 
     def move(self):
+        """ This method allow us to make the player move and pick up items on the destination case
+        updating all the positions """
         # Loop speed limitation
         pygame.time.Clock().tick(30)
 
@@ -129,6 +136,7 @@ class Game:
             self.plastic_tube.stop_display(self.macgyver)
 
     def reload_graphic(self):
+        """ This method allow us to recharge the graphic environment after each movement """
         # Display of the new situation after every movements
         self.window.blit(self.background, (0, 0))
         self.maze.display(self.window, WALL_IMAGE, GARDIAN_IMAGE)
@@ -145,26 +153,39 @@ class Game:
         pygame.display.flip()
 
     def display_endgame(self):
+        """ This method only intervene when it is the end game and will display either the win screen or the
+        loss screen then wait for the user to press a key to bring him back to the lobby"""
         # We check for victory (at the exit with all items in inventory)
         if self.macgyver.inventory == NUMBER_OF_ITEMS:
             # We display the win page
             win = pygame.image.load(WIN).convert()
             self.window.blit(win, (0, 0))
             pygame.display.flip()
-            time.sleep(5.5)
-            # And we restart the game
-            self.remain_in_game = False
+            # Limitation of loop speed
+            pygame.time.Clock().tick(30)
+            for event in pygame.event.get():
+                # If the user restart he just has to press another key
+                if event.type == KEYDOWN:
+                    self.remain_in_game = False
+                    self.remain_in_lobby = True
         # If we goes the guardian without all the items, we loose :
         else:
             # we display the loose page
             loss = pygame.image.load(LOSS).convert()
             self.window.blit(loss, (0, 0))
             pygame.display.flip()
-            time.sleep(5.5)
-            # And restart the game
-            self.remain_in_game = False
+            # Limitation of loop speed
+            pygame.time.Clock().tick(30)
+            for event in pygame.event.get():
+                # If the user restart he just has to press another key
+                if event.type == KEYDOWN:
+                    self.remain_in_game = False
+                    self.remain_in_lobby = True
 
     def run(self):
+        """" This method represents the game itself : you first arrive at lobby, if you press a key
+        you are in game and moving, with you reach the guardian, we check for victory and display
+        the appropriate """
         self.is_running = True
         while self.is_running:
             while self.remain_in_lobby:

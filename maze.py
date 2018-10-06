@@ -58,10 +58,10 @@ class Maze:
 
         # we go through the level structure to give each position its sprite
         line_number = 0
-        for ligne in self.structure:
-            # On parcourt les listes de lignes
+        for line in self.structure:
+            # We go through the the lines then
             case_number = 0
-            for sprite in ligne:
+            for sprite in line:
                 # we compute the position in pixel
                 x = case_number * PIXELS_PER_SPRITE
                 y = line_number * PIXELS_PER_SPRITE
@@ -75,6 +75,7 @@ class Maze:
             line_number += 1
 
     def is_endgame(self, player):
+        """" This method will check if the player is in a situation in which the game can end"""
         if self.structure[player.case_x][player.case_y] == 'e':
             return True
 
