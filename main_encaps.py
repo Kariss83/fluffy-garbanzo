@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import time
 import random
 
 import pygame
@@ -25,7 +26,7 @@ class Game:
         pygame.init()
         os.environ["SDL_VIDEODRIVER"] = "dummy"
 
-        # random initalization
+        # random initialization
         random.seed()
 
         # initiating pygame window at the size of our total sprites + inventory display
@@ -38,6 +39,7 @@ class Game:
 
         # init of all other variables
         self.background = None
+        self.inventory = None
         self.maze = None
         self.macgyver = None
         self.needle = None
@@ -57,6 +59,10 @@ class Game:
         lobby = pygame.image.load(LOBBY_IMAGE).convert()
         self.window.blit(lobby, (0, 0))
         pygame.display.flip()
+
+        # We need to get to remain_in_game the value True so that if it's not the first game
+        # the user will still be able to enter the game itself
+        self.remain_in_game = True
 
         for event in pygame.event.get():
             # In case the user wants to qui we put all control variable
@@ -98,8 +104,8 @@ class Game:
         self.plastic_tube.display_item(self.window)
 
         # Display the inventory counter
-        inventory = pygame.image.load(INVENTORY_LIST[0])
-        self.window.blit(inventory, (0, 900))
+        self.inventory = pygame.image.load(INVENTORY_LIST[0])
+        self.window.blit(self.inventory, (0, 900))
 
     def move(self):
         """ This method allow us to make the player move and pick up items on the destination case
@@ -117,6 +123,7 @@ class Game:
                 # If the user only press escape he comes back to the lobby
                 if event.key == K_ESCAPE:
                     self.remain_in_game = False
+                    self.remain_in_lobby = True
 
                 # Moving MacGyver using the arrow keys
                 elif event.key == K_RIGHT:
@@ -146,8 +153,8 @@ class Game:
         self.window.blit(self.macgyver.sprite, (self.macgyver.x, self.macgyver.y))
 
         # Display the inventory counter
-        inventory = pygame.image.load(INVENTORY_LIST[self.macgyver.inventory])
-        self.window.blit(inventory, (0, 900))
+        self.inventory = pygame.image.load(INVENTORY_LIST[self.macgyver.inventory])
+        self.window.blit(self.inventory, (0, 900))
 
         # Refresh display
         pygame.display.flip()
@@ -161,10 +168,11 @@ class Game:
             win = pygame.image.load(WIN).convert()
             self.window.blit(win, (0, 0))
             pygame.display.flip()
+            time.sleep(3)
             # Limitation of loop speed
             pygame.time.Clock().tick(30)
             for event in pygame.event.get():
-                # If the user restart he just has to press another key
+                # If the user wants to restart he just has to press another key
                 if event.type == KEYDOWN:
                     self.remain_in_game = False
                     self.remain_in_lobby = True
@@ -174,10 +182,12 @@ class Game:
             loss = pygame.image.load(LOSS).convert()
             self.window.blit(loss, (0, 0))
             pygame.display.flip()
+            time.sleep(3)
             # Limitation of loop speed
             pygame.time.Clock().tick(30)
+
             for event in pygame.event.get():
-                # If the user restart he just has to press another key
+                # If the user wants to restart he just has to press another key
                 if event.type == KEYDOWN:
                     self.remain_in_game = False
                     self.remain_in_lobby = True
