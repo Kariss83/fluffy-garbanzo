@@ -168,29 +168,33 @@ class Game:
             win = pygame.image.load(WIN).convert()
             self.window.blit(win, (0, 0))
             pygame.display.flip()
-            time.sleep(3)
-            # Limitation of loop speed
-            pygame.time.Clock().tick(30)
-            for event in pygame.event.get():
-                # If the user wants to restart he just has to press another key
-                if event.type == KEYDOWN:
-                    self.remain_in_game = False
-                    self.remain_in_lobby = True
+            end_key_pressed = False
+            while not end_key_pressed:
+                # Limitation of loop speed
+                pygame.time.Clock().tick(30)
+                for event in pygame.event.get():
+                    # If the user wants to restart he just has to press another key
+                    if event.type == KEYDOWN:
+                        self.remain_in_game = False
+                        self.remain_in_lobby = True
+                        end_key_pressed = True
         # If we goes the guardian without all the items, we loose :
         else:
             # we display the loose page
             loss = pygame.image.load(LOSS).convert()
             self.window.blit(loss, (0, 0))
             pygame.display.flip()
-            time.sleep(3)
             # Limitation of loop speed
-            pygame.time.Clock().tick(30)
+            end_key_pressed = False
+            while not end_key_pressed:
+                pygame.time.Clock().tick(30)
 
-            for event in pygame.event.get():
-                # If the user wants to restart he just has to press another key
-                if event.type == KEYDOWN:
-                    self.remain_in_game = False
-                    self.remain_in_lobby = True
+                for event in pygame.event.get():
+                    # If the user wants to restart he just has to press another key
+                    if event.type == KEYDOWN:
+                        self.remain_in_game = False
+                        self.remain_in_lobby = True
+                        end_key_pressed = True
 
     def run(self):
         """" This method represents the game itself : you first arrive at lobby, if you press a key
