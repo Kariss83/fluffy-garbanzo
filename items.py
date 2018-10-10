@@ -1,5 +1,8 @@
 #! usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""This file contains the times module, in wich we define the item class used
+to created all the items we need in this game.
+"""
 
 import random
 
@@ -10,7 +13,8 @@ PIXELS_PER_SPRITE = 60
 
 class Item:
     """This class will allow the creation of any item that lies on the game
-    structure (object or NPC)"""
+    structure (object or NPC)
+    """
 
     def __init__(self, lvl, sprite):
         # default coordinate
@@ -24,16 +28,21 @@ class Item:
 
     @property
     def x(self):
-        """We need to have the x position in pixel in order to display using pygame"""
+        """We need to have the x position in pixel in order to display using
+        pygame
+        """
         return self.case_x * PIXELS_PER_SPRITE
 
     @property
     def y(self):
-        """we need to have the y position in pixel in order to display using pygame"""
+        """we need to have the y position in pixel in order to display using
+        pygame
+        """
         return self.case_y * PIXELS_PER_SPRITE
 
     def placing(self):
-        """We randomly place the item in an empty case """
+        """We randomly place the item in an empty case
+        """
         # generating a random index to get a position in maze.empty_for_obj
         k = random.randint(0, len(self.lvl.empty_for_obj) - 1)
         # getting the coordinate in maze.empty_for_obj[k]
@@ -45,12 +54,16 @@ class Item:
         # self.lvl.empty_for_obj.remove((self.case_x, self.case_y))
 
     def display_item(self, window):
-        """We first check if the item is picked up and then we display its sprite ate the right location"""
+        """We first check if the item is picked up and then we display its
+        sprite ate the right location
+        """
         if self.state:
             window.blit(self.sprite, (self.x, self.y))
 
     def stop_display(self, player):
-        """If the player goes into an item position, it should not be displayed anymore"""
+        """If the player goes into an item position, it should not be
+        displayed anymore
+        """
         if (player.case_x, player.case_y) == (self.case_x, self.case_y):
             self.state = 0
 

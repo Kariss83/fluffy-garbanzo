@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # coding: utf-8
-
+"""This file contains the maze module, in which we define the maze on which
+the game will take place.
+"""
 
 import csv
 import pygame
@@ -10,11 +12,13 @@ PIXELS_PER_SPRITE = 60
 
 class Maze:
     """This class allows to read the  structure of the game lvl itself : the 
-    maze from a csv file"""
+    maze from a csv file
+    """
 
     def __init__(self, data_file):
         """the data_file expected is the one containing the maze stucture
-        in a csv file with ';' as delimiter"""
+        in a csv file with ';' as delimiter
+        """
         self.file = data_file
         self.structure = []
         self.empty = []
@@ -26,7 +30,8 @@ class Maze:
     def creation(self):
         """This method will allow the reading and and use of the csv file
         in order to build and store in the attribute 'structure' the maze
-        as a set of values (the one for each sprite)"""
+        as a set of values (the one for each sprite)
+        """
         with open(self.file, "r") as mazestructure:
             lvl_structure = []
             reader = csv.reader(mazestructure, delimiter=';')
@@ -49,7 +54,8 @@ class Maze:
 
     def display(self, window, wall_img, guardian_img):
         """This method will allow to load graphical representation of the maze
-        structure that we generated with the lvl_creation method in a window"""
+        structure that we generated with the lvl_creation method in a window
+        """
         # loading wall sprite
         wall = pygame.image.load(wall_img).convert()
 
@@ -65,17 +71,21 @@ class Maze:
                 # we compute the position in pixel
                 x = case_number * PIXELS_PER_SPRITE
                 y = line_number * PIXELS_PER_SPRITE
-                # We display wall everywhere there is a free space represented by a o in the csv file
+                # We display wall everywhere there is a free space represented
+                # by a o in the csv file
                 if sprite == 'x':  # x = wall
                     window.blit(wall, (x, y))
-                # And the guardian sprite at the position that contains an e for exit
+                # And the guardian sprite at the position that contains an e
+                # for exit
                 elif sprite == 'e': # e = exit
                     window.blit(guardian, (x, y))
                 case_number += 1
             line_number += 1
 
     def is_endgame(self, player):
-        """" This method will check if the player is in a situation in which the game can end"""
+        """" This method will check if the player is in a situation in which
+        the game can end
+        """
         if self.structure[player.case_x][player.case_y] == 'e':
             return True
 

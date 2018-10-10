@@ -1,7 +1,9 @@
 #! usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""Here are all the constants we need in the game"""
+"""Here are all the constants we need in the game
+"""
+
 # window parameter
 SPRITE_NUMBER = 15
 PIXELS_PER_SPRITE = 60

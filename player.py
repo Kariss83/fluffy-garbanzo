@@ -1,6 +1,8 @@
 #! usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+"""This file contains the player module, in which we define the player class
+used to created macgyver the hero of the game.
+"""
 import pygame
 
 PIXELS_PER_SPRITE = 60
@@ -8,7 +10,8 @@ PIXELS_PER_SPRITE = 60
 
 class Player:
     """This class will allow the creation of the playable character
-    (aka. Chuck) and allow him to move through the maze"""
+    (aka. Chuck) and allow him to move through the maze
+    """
 
     def __init__(self, sprite, lvl):
         # we load the sprite of the playable character with pygame
@@ -16,8 +19,9 @@ class Player:
         # we need to indicate the lvl in order to get the initial position
         self.lvl = lvl
         self.sprite = pygame.image.load(sprite).convert_alpha()
-        # in a particular lvl we have to look for the coordinates of the entrance
-        # should be able to get a tuple with its position in the maze structure
+        # in a particular lvl we have to look for the coordinates of the
+        # entrance should be able to get a tuple with its position in the
+        # maze structure
         self.case_x = lvl.entry[0]
         self.case_y = lvl.entry[1]
         # inventory is empty at creation
@@ -25,20 +29,24 @@ class Player:
 
     @property
     def x(self):
-        """This property is useful for position in pixel in pygame"""
+        """This property is useful for position in pixel in pygame
+        """
         return self.case_x * PIXELS_PER_SPRITE
 
     @property
     def y(self):
-        """This property is useful for position in pixel in pygame"""
+        """This property is useful for position in pixel in pygame
+        """
         return self.case_y * PIXELS_PER_SPRITE
 
     def move_to(self, direction):
-        """Method that allow to move the player in any direction"""
+        """Method that allow to move the player in any direction
+        """
 
         # to the right
         if direction == "right":
-            # We can only move in a position that is not a wall (all stored in lvl.empty)
+            # We can only move in a position that is not a wall
+            # (all stored in lvl.empty)
             if (self.case_y, self.case_x + 1) in self.lvl.empty:
                 self.case_x += 1
                 # self.x = self.case_x * PIXELS_PER_SPRITE

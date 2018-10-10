@@ -1,5 +1,8 @@
 #! usr/bin/env/python3
 # coding: utf-8
+"""This file is optionnal and only used to play the game with a non fully OO
+paradigm
+"""
 
 import os
 import time
@@ -14,7 +17,8 @@ from maze import Maze
 from items import Item
 from constants import *
 
-"""And now the program itself"""
+"""And now the program itself
+"""
 # pygame start
 pygame.init()
 os.environ["SDL_VIDEODRIVER"] = "dummy"
@@ -23,7 +27,8 @@ os.environ["SDL_VIDEODRIVER"] = "dummy"
 random.seed()
 
 # initiating pygame window at the size of our total sprites + inventory display
-window = pygame.display.set_mode((WINDOW_SIZE, WINDOW_SIZE + PIXELS_PER_SPRITE), RESIZABLE)
+window = pygame.display.set_mode(
+    (WINDOW_SIZE, WINDOW_SIZE + PIXELS_PER_SPRITE), RESIZABLE)
 # game icon
 icon = pygame.image.load(ICON_IMAGE)
 pygame.display.set_icon(icon)
@@ -51,7 +56,8 @@ while is_running:
         for event in pygame.event.get():
             # In case the user wants to qui we put all control variable
             # the value 0
-            if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+            if event.type == QUIT or \
+                    (event.type == KEYDOWN and event.key == K_ESCAPE):
                 is_running = False
                 remain_in_game = False
                 remain_in_lobby = False
@@ -115,7 +121,8 @@ while is_running:
                 elif event.key == K_DOWN:
                     macgyver.move_to('down')
 
-            # We try to pick up the item on the position we are after every movement
+            # We try to pick up the item on the position we are after every
+            # movement
             macgyver.Pickup()
             # If an object is picked up, he should not be displayed anymore
             ether.stop_display(macgyver)
