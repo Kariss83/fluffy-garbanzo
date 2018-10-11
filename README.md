@@ -48,6 +48,6 @@ Use the following commands:
 In order to run the game you have to start the file main.py with the following command:
 `<python3 main.py>`
 
-##Questions
+## Questions
 If you have any questions or wants to contribute feel free to make a PR.
 
