@@ -10,8 +10,8 @@ import pygame
 PIXELS_PER_SPRITE = 60
 
 
-class Maze:
-    """This class allows to read the  structure of the game lvl itself : the 
+class Maze(object):
+    """This class allows to read the  structure of the game lvl itself : the
     maze from a csv file
     """
 
@@ -69,16 +69,16 @@ class Maze:
             case_number = 0
             for sprite in line:
                 # we compute the position in pixel
-                x = case_number * PIXELS_PER_SPRITE
-                y = line_number * PIXELS_PER_SPRITE
+                x_pix = case_number * PIXELS_PER_SPRITE
+                y_pix = line_number * PIXELS_PER_SPRITE
                 # We display wall everywhere there is a free space represented
                 # by a o in the csv file
                 if sprite == 'x':  # x = wall
-                    window.blit(wall, (x, y))
+                    window.blit(wall, (x_pix, y_pix))
                 # And the guardian sprite at the position that contains an e
                 # for exit
                 elif sprite == 'e': # e = exit
-                    window.blit(guardian, (x, y))
+                    window.blit(guardian, (x_pix, y_pix))
                 case_number += 1
             line_number += 1
 
@@ -90,14 +90,10 @@ class Maze:
             return True
 
 
-def main():
-    maze = Maze('data/maze_structure.csv')
-    maze.lvl_creation()
-    print(maze.structure)
-    print(maze.empty)
-    print(maze.exit)
-    print(maze.entry)
-
 
 if __name__ == "__main__":
-    main()
+    def main():
+        """ This is a test function
+        """
+        maze = Maze('data/maze_structure.csv')
+        maze.creation()

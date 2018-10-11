@@ -11,7 +11,7 @@ import pygame
 PIXELS_PER_SPRITE = 60
 
 
-class Item:
+class Item(object):
     """This class will allow the creation of any item that lies on the game
     structure (object or NPC)
     """
@@ -27,14 +27,14 @@ class Item:
         self.state = 1
 
     @property
-    def x(self):
+    def x_pix(self):
         """We need to have the x position in pixel in order to display using
         pygame
         """
         return self.case_x * PIXELS_PER_SPRITE
 
     @property
-    def y(self):
+    def y_pix(self):
         """we need to have the y position in pixel in order to display using
         pygame
         """
@@ -50,7 +50,7 @@ class Item:
         self.case_y = self.lvl.empty_for_obj[k][0]
         # self.case_x, self.case_y = random.choice(self.lvl.empty_for_obj)
         self.lvl.items.append((self.case_x, self.case_y))
-        del (self.lvl.empty_for_obj[k])
+        del self.lvl.empty_for_obj[k]
         # self.lvl.empty_for_obj.remove((self.case_x, self.case_y))
 
     def display_item(self, window):
@@ -58,7 +58,7 @@ class Item:
         sprite ate the right location
         """
         if self.state:
-            window.blit(self.sprite, (self.x, self.y))
+            window.blit(self.sprite, (self.x_pix, self.y_pix))
 
     def stop_display(self, player):
         """If the player goes into an item position, it should not be
@@ -68,9 +68,6 @@ class Item:
             self.state = 0
 
 
-def main():
-    pass
-
 
 if __name__ == "__main__":
-    main()
+    pass

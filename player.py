@@ -8,7 +8,7 @@ import pygame
 PIXELS_PER_SPRITE = 60
 
 
-class Player:
+class Player(object):
     """This class will allow the creation of the playable character
     (aka. Chuck) and allow him to move through the maze
     """
@@ -28,13 +28,13 @@ class Player:
         self.inventory = 0
 
     @property
-    def x(self):
+    def x_pix(self):
         """This property is useful for position in pixel in pygame
         """
         return self.case_x * PIXELS_PER_SPRITE
 
     @property
-    def y(self):
+    def y_pix(self):
         """This property is useful for position in pixel in pygame
         """
         return self.case_y * PIXELS_PER_SPRITE
@@ -49,34 +49,32 @@ class Player:
             # (all stored in lvl.empty)
             if (self.case_y, self.case_x + 1) in self.lvl.empty:
                 self.case_x += 1
-                # self.x = self.case_x * PIXELS_PER_SPRITE
         # to the left
         if direction == "left":
             if (self.case_y, self.case_x - 1) in self.lvl.empty:
                 self.case_x -= 1
-                # self.x = self.case_x * PIXELS_PER_SPRITE
         # going up
         if direction == "up":
             if (self.case_y - 1, self.case_x) in self.lvl.empty:
                 self.case_y -= 1
-                # self.y = self.case_y * PIXELS_PER_SPRITE
         # Going down
         if direction == "down":
             if (self.case_y + 1, self.case_x) in self.lvl.empty:
                 self.case_y += 1
-                # self.y = self.case_y * PIXELS_PER_SPRITE
 
-    def Pickup(self):
+    def pickup(self):
+        """ This method allow the character to try to pick up an item
+        if there is one on his postion
+        """
         if (self.case_x, self.case_y) in self.lvl.items:
             self.inventory += 1
             self.lvl.items.remove((self.case_x, self.case_y))
 
 
-def main():
-    maze = Maze('data/maze_structure.csv')
-    maze.lvl_creation()
-    chuck = Player(0, maze)
-
 
 if __name__ == "__main__":
-    main()
+    """ This is a test function
+    """
+    maze = Maze('data/maze_structure.csv')
+    maze.lvl_creation()
+    chuck = Player(0, maze)        

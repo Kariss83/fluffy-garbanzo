@@ -16,7 +16,7 @@ from items import Item
 from constants import *
 
 
-class Game:
+class Game(object):
     """This is the main class, the one containing the maze, the character and
     the items, used to display the whole environment
     """
@@ -99,7 +99,7 @@ class Game:
         self.maze.creation()
 
         # hero generation
-        self.macgyver = Player('data/resource/MacGyver.png', self.maze)
+        self.macgyver = Player(HERO_IMAGE, self.maze)
 
         # items generation
         self.needle = Item(self.maze, NEEDLE_SPRITE)
@@ -150,7 +150,7 @@ class Game:
 
             # We try to pick up the item on the position we are after every
             # movement
-            self.macgyver.Pickup()
+            self.macgyver.pickup()
             # If an object is picked up, he should not be displayed anymore
             self.ether.stop_display(self.macgyver)
             self.needle.stop_display(self.macgyver)
@@ -166,8 +166,8 @@ class Game:
         self.ether.display_item(self.window)
         self.needle.display_item(self.window)
         self.plastic_tube.display_item(self.window)
-        self.window.blit(self.macgyver.sprite, (self.macgyver.x,
-                                                self.macgyver.y))
+        self.window.blit(self.macgyver.sprite, (self.macgyver.x_pix,
+                                                self.macgyver.y_pix))
 
         # Display the inventory counter
         self.inventory = pygame.image.load(
