@@ -6,10 +6,13 @@ This repo contains all the files you need to run a little game of running throug
 
 You are MacGyver and have to find a way to escape the maze.
 The problem is that a guardian is at the end of it and you don't have sufficient power to kill him by hand.
-Therefore you have to first pick up all items you find on the maze (seringe, plactic tube and ether) in order to put him to sleep.
+Therefore you have to first pick up all items you find on the maze (seringe, plactic tube and ether) in order to put him
+to sleep.
 This way you'll be able to escape.
 
 ## How to run
+This game have been developped to be used with python 3.7, if you run into trouble while trying to run this game make 
+sure that you are running the right version of python.
 
 ### Getting the repo
 First you have to install git by visiting [their website](https://git-scm.com/)
