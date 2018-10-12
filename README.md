@@ -12,6 +12,8 @@ This way you'll be able to escape.
 ## How to run
 
 ### Getting the repo
+First you have to install git by visiting [their website](https://git-scm.com/)
+
 In order to get the repo you have to clone it using git :
 `<git clone https://github.com/Kariss83/fluffy-garbanzo.git>`
 
@@ -21,26 +23,26 @@ Then you have to prepare a virtualenv in order to get the additional modules you
 #### For Unix systems
 Use the following commands:
 * (If you don't have yet installed virtualenv):
-`<pip install virtualenv>`
+`<pip3 install virtualenv>`
 * Initialize your virtual env:
 `<virtualenv -p python3 env>`
 * Activate you virtual env:
 `<source env/bin/activate>`
 	* Normally you should see a *(env)* at the beginning of your command line
 * Install the external modules using pip
-`<pip install -r requirements.txt>`
+`<pip3 install -r requirements.txt>`
  
 #### For windows
 Use the following commands:
 * (If you don't have yet installed virtualenv):
-`<pip install virtualenv>`
+`<pip3 install virtualenv>`
 * Initialize your virtual env:
 `<virtualenv -p $env:python3 env>`
 * Activate you virtual env:
 `<.env/scripts/activate.ps1>`
 	* Normally you should see a *(env)* at the beginning of your command line
 * Install the external modules using pip
-`<pip install -r requirements.txt>`
+`<pip3 install -r requirements.txt>`
  
 
 
