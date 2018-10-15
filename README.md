@@ -37,6 +37,8 @@ Use the following commands:
  
 #### For windows
 Use the following commands:
+* Make sure you have the right to execute file within powershell by entering the following command in a powershell ran as admin:
+`<Set-ExecutionPolicy RemoteSigned -scope CurrentUser>`
 * (If you don't have yet installed virtualenv):
 `<pip3 install virtualenv>`
 * Initialize your virtual env:
@@ -51,7 +53,10 @@ Use the following commands:
 
 ### Running the game
 In order to run the game you have to start the file main.py with the following command:
+*for UNIX system user*
 `<python3 main.py>`
+*for windows user*
+`<python.exe ./main.py>`
 
 ## Questions
 If you have any questions or wants to contribute feel free to make a PR.
